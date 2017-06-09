@@ -76,7 +76,6 @@ print (y_train.shape)
 print("Vocabulary Size: {:d}".format(len(vocab_processor.vocabulary_)))
 print("Train/Dev split: {:d}/{:d}".format(len(y_train), len(y_dev)))
 
-
 # Training
 # ==================================================
 
@@ -172,7 +171,12 @@ with tf.Graph().as_default():
                 [global_step, dev_summary_op, cnn.loss, cnn.accuracy],
                 feed_dict)
             time_str = datetime.datetime.now().isoformat()
-            print("{}: step {}, loss {:g}, acc {:g}".format(time_str, step, loss, accuracy))
+            result = "{}: step {}, loss {:g}, acc {:g}".format(time_str, step, loss, accuracy)
+            print(result)
+
+            with open(os.path.join(out_dir, "result"), 'a+') as f:
+                f.write("{}\n".format(result))
+
             if writer:
                 writer.add_summary(summaries, step)
 
