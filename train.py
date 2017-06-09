@@ -1,15 +1,19 @@
 #! /usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import tensorflow as tf
 import numpy as np
 import os
 import time
 import datetime
+import tempfile
+import shutil
+
 import data_helpers
 from text_cnn import TextCNN
 from tensorflow.contrib import learn
-import tempfile
-import win32file
+
+
 # Parameters
 # ==================================================
 
@@ -84,8 +88,8 @@ tf.MaxAcc = 0.1
 def copymax(path):
     # 拷文件
     # 文件已存在时，1为不覆盖，0为覆盖
-    win32file.CopyFile(path, "{}backup".format(path), 0)
-    
+    shutil.copy(path, "{}.backup".format(path))
+
 with tf.Graph().as_default():
     session_conf = tf.ConfigProto(
       allow_soft_placement=FLAGS.allow_soft_placement,
@@ -211,7 +215,7 @@ with tf.Graph().as_default():
                 path = saver.save(sess, checkpoint_prefix, global_step=current_step)
                 print("Saved model checkpoint to {}\n".format(path))
                 if ifsave:  # 存个备份免得被删了
-                path = saver.save(sess, MaxAcc_prefi, None)
-                copymax("{}.data-00000-of-00001".format(path))
-                copymax("{}.index".format(path))
-                copymax("{}.meta".format(path))
+                    path = saver.save(sess, MaxAcc_prefi, None)
+                    copymax("{}.data-00000-of-00001".format(path))
+                    copymax("{}.index".format(path))
+                    copymax("{}.meta".format(path))
