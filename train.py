@@ -86,8 +86,6 @@ print("Train/Dev split: {:d}/{:d}".format(len(y_train), len(y_dev)))
 tf.MaxAcc = 0.1
 
 def copymax(path):
-    # 拷文件
-    # 文件已存在时，1为不覆盖，0为覆盖
     shutil.copy(path, "{}.backup".format(path))
 
 with tf.Graph().as_default():
