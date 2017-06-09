@@ -26,12 +26,14 @@ def clean_str(string):
     return string.strip().lower()
 
 
+
 def load_data_and_labels(data_file):
     """
     Loads MR polarity data from files, splits the data into words and generates labels.
     Returns split sentences and labels.
     """
     # Load data from files
+
     # {"Very Negative", "Negative", "Neutral", "Positive", "Very Positive"}
     label_mappings = {
         '0': [1,0,0,0,0],
@@ -40,6 +42,7 @@ def load_data_and_labels(data_file):
         '3': [0,0,0,1,0],
         '4': [0,0,0,0,1]
     }
+
 
     # Default label for unkonw label
     default_label = [0,0,1,0,0]

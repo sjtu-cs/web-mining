@@ -14,11 +14,13 @@ import csv
 # ==================================================
 
 # Data Parameters
+
 tf.flags.DEFINE_string("data_file", "./data/dev.txt", "Data source for the evaluation data.")
 
 # Eval Parameters
 tf.flags.DEFINE_integer("batch_size", 64, "Batch Size (default: 64)")
 tf.flags.DEFINE_string("checkpoint_dir", "", "Checkpoint directory from training run")
+
 tf.flags.DEFINE_boolean("eval_train", True, "Evaluate on all training data")
 
 # Misc Parameters
@@ -35,7 +37,9 @@ print("")
 
 # CHANGE THIS: Load data. Load your own data here
 if FLAGS.eval_train:
+
     x_raw, y_test = data_helpers.load_data_and_labels(FLAGS.data_file)
+
     y_test = np.argmax(y_test, axis=1)
 else:
     x_raw = ["a masterpiece four years in the making", "everything is off."]

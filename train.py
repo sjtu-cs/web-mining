@@ -14,6 +14,7 @@ from tensorflow.contrib import learn
 
 # Data loading params
 tf.flags.DEFINE_float("dev_sample_percentage", .1, "Percentage of the training data to use for validation")
+
 tf.flags.DEFINE_string("data_file", "./data/train.txt", "Data source for the training data.")
 
 # Model Hyperparameters
@@ -46,6 +47,7 @@ print("")
 
 # Load data
 print("Loading data...")
+
 x_text, y_label = data_helpers.load_data_and_labels(FLAGS.data_file)
 # print ('y is:',y)
 
@@ -70,6 +72,7 @@ y_shuffled = y[shuffle_indices]
 dev_sample_index = -1 * int(FLAGS.dev_sample_percentage * float(len(y)))
 x_train, x_dev = x_shuffled[:dev_sample_index], x_shuffled[dev_sample_index:]
 y_train, y_dev = y_shuffled[:dev_sample_index], y_shuffled[dev_sample_index:]
+print (y_train.shape)
 print("Vocabulary Size: {:d}".format(len(vocab_processor.vocabulary_)))
 print("Train/Dev split: {:d}/{:d}".format(len(y_train), len(y_dev)))
 
