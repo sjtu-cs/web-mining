@@ -1,8 +1,8 @@
-# **hope everyone of us can engaged in this project and improve our homework quality **
 ## SJTU WebMining homework project
 
-This project is created for finishing our web mining homework. The base project is **[dennybritz/cnn-text-classification-tf](https://github.com/dennybritz/cnn-text-classification-tf)**.  It can classify the positive and negative movie reviews. We modified it to adapt to our homework that have 5 labels(0,1,2,3,4)
+**hope everyone of us can engaged in this project and improve our homework quality**
 
+This project is created for finishing our web mining homework. The base project is **[dennybritz/cnn-text-classification-tf](https://github.com/dennybritz/cnn-text-classification-tf)**.  It can classify the positive and negative movie reviews. We modified it to adapt to our homework that have 5 labels(0,1,2,3,4)
 
 
 **[The base project code belongs to the "Implementing a CNN for Text Classification in Tensorflow" blog post.](http://www.wildml.com/2015/12/implementing-a-cnn-for-text-classification-in-tensorflow/)**
@@ -18,7 +18,7 @@ It is slightly simplified implementation of Kim's [Convolutional Neural Networks
 
 ## Install tensorflow
 
-please see the [install guide](https://www.tensorflow.org/install/) in tensorflow website 
+please see the [install guide](https://www.tensorflow.org/install/) in tensorflow website
 
 
 
@@ -34,6 +34,8 @@ Print parameters:
 ```
 optional arguments:
   -h, --help            show this help message and exit
+  --data_file DATA_FILE
+            File for training or evaluation (default: /data/train.txt for training, /data/dev.txt for evaluation)
   --embedding_dim EMBEDDING_DIM
             Dimensionality of character embedding (default: 128)
   --filter_sizes FILTER_SIZES

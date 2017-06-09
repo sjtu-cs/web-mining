@@ -14,6 +14,7 @@ import csv
 # ==================================================
 
 # Data Parameters
+<<<<<<< HEAD
 tf.flags.DEFINE_string("positive_data_file", "./data/rt-polaritydata/rt-polarity.pos", "Data source for the positive data.")
 tf.flags.DEFINE_string("negative_data_file", "./data/rt-polaritydata/rt-polarity.neg", "Data source for the positive data.")
 tf.flags.DEFINE_string("dev_data", "./data/dev.txt", "Data source for the develop data.")
@@ -21,6 +22,13 @@ tf.flags.DEFINE_string("dev_data", "./data/dev.txt", "Data source for the develo
 tf.flags.DEFINE_integer("batch_size", 64, "Batch Size (default: 64)")
 tf.flags.DEFINE_string("checkpoint_dir", "", "Checkpoint directory from training run")
 # tf.flags.DEFINE_boolean("eval_train", False, "Evaluate on all training data")
+=======
+tf.flags.DEFINE_string("data_file", "./data/dev.txt", "Data source for the evaluation data.")
+
+# Eval Parameters
+tf.flags.DEFINE_integer("batch_size", 64, "Batch Size (default: 64)")
+tf.flags.DEFINE_string("checkpoint_dir", "", "Checkpoint directory from training run")
+>>>>>>> b4c0eb65fbf3fb19709c7128247e32fcd183de99
 tf.flags.DEFINE_boolean("eval_train", True, "Evaluate on all training data")
 
 # Misc Parameters
@@ -37,7 +45,11 @@ print("")
 
 # CHANGE THIS: Load data. Load your own data here
 if FLAGS.eval_train:
+<<<<<<< HEAD
     x_raw, y_test = data_helpers.load_data_and_labels(FLAGS.dev_data)
+=======
+    x_raw, y_test = data_helpers.load_data_and_labels(FLAGS.data_file)
+>>>>>>> b4c0eb65fbf3fb19709c7128247e32fcd183de99
     y_test = np.argmax(y_test, axis=1)
 else:
     x_raw = ["a masterpiece four years in the making", "everything is off."]
@@ -89,8 +101,8 @@ if y_test is not None:
     print("Accuracy: {:g}".format(correct_predictions/float(len(y_test))))
 
 # Save the evaluation to a csv
-predictions_human_readable = np.column_stack((np.array(x_raw), all_predictions))
+predictions_human_readable = np.column_stack((all_predictions, np.array(x_raw)))
 out_path = os.path.join(FLAGS.checkpoint_dir, "..", "prediction.csv")
 print("Saving evaluation to {0}".format(out_path))
 with open(out_path, 'w') as f:
-    csv.writer(f).writerows(predictions_human_readable)
+    csv.writer(f, delimiter= ' ').writerows(predictions_human_readable)
