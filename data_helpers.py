@@ -26,43 +26,35 @@ def clean_str(string):
     return string.strip().lower()
 
 
-def load_data_and_labels(positive_data_file, negative_data_file):
+def load_data_and_labels(data_file):
     """
     Loads MR polarity data from files, splits the data into words and generates labels.
     Returns split sentences and labels.
     """
     # Load data from files
-    # positive_examples = list(open(positive_data_file, "r").readlines())
-    positive_examples = list(open('./data/train.txt', "r").readlines())
-    positive_examples = [s.strip() for s in positive_examples]
-    labels = [s[0] for s in positive_examples]
-    records = [s[2:] for s in positive_examples]
-    
-    # Split by words
-    
-    x_text = [clean_str(sent) for sent in records]
-   
-    # Generate labels
-    lab_v=[]
+    # {"Very Negative", "Negative", "Neutral", "Positive", "Very Positive"}
+    label_mappings = {
+        '0': [1,0,0,0,0],
+        '1': [0,1,0,0,0],
+        '2': [0,0,1,0,0],
+        '3': [0,0,0,1,0],
+        '4': [0,0,0,0,1]
+    }
 
-    for index in range(len(labels)):
-       
-       if labels[index] == '0':
-           lab_v.append([1,0,0,0,0])
-       elif labels[index] == '1':
-           lab_v.append([0,1,0,0,0])
-       elif labels[index] == '2':
-           lab_v.append([0,0,1,0,0])
-       elif labels[index] == '3':
-           lab_v.append([0,0,0,1,0])
-       elif labels[index] == '4':
-           lab_v.append([0,0,0,0,1])
-    
-    # positive_labels = [[0, 1] for _ in positive_examples]
-    # negative_labels = [[1, 0] for _ in negative_examples]
-    # y = np.concatenate([positive_labels, negative_labels], 0)
-    return [x_text, lab_v]
+    # Default label for unkonw label
+    default_label = [0,0,1,0,0]
 
+    x_text = []
+    labels = []
+
+    with open(data_file, 'r') as f:
+        samples = [s.strip() for s in list(f.readlines())]
+        for sample in samples:
+            x_text.append(clean_str(sample[2:]))
+            labels.append(label_mappings.get(sample[0], default_label))
+
+    y_label = np.concatenate([labels], 0)
+    return [x_text, y_label]
 
 def batch_iter(data, batch_size, num_epochs, shuffle=True):
     """
