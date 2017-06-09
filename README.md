@@ -1,7 +1,7 @@
-##SJTU WebMining homework project
+# **hope everyone of us can engaged in this project and improve our homework quality **
+## SJTU WebMining homework project
 
-**This project is created for finishing our web mining homework. The base project is [dennybritz/cnn-text-classification-tf](https://github.com/dennybritz/cnn-text-classification-tf)**
-
+This project is created for finishing our web mining homework. The base project is **[dennybritz/cnn-text-classification-tf](https://github.com/dennybritz/cnn-text-classification-tf)**.  It can classify the positive and negative movie reviews. We modified it to adapt to our homework that have 5 labels(0,1,2,3,4)
 
 
 
@@ -16,7 +16,8 @@ It is slightly simplified implementation of Kim's [Convolutional Neural Networks
 - Tensorflow > 0.12
 - Numpy
 
-##how to install tensorflow
+## Install tensorflow
+
 please see the [install guide](https://www.tensorflow.org/install/) in tensorflow website 
 
 
@@ -34,29 +35,29 @@ Print parameters:
 optional arguments:
   -h, --help            show this help message and exit
   --embedding_dim EMBEDDING_DIM
-                        Dimensionality of character embedding (default: 128)
+            Dimensionality of character embedding (default: 128)
   --filter_sizes FILTER_SIZES
-                        Comma-separated filter sizes (default: '3,4,5')
+            Comma-separated filter sizes (default: '3,4,5')
   --num_filters NUM_FILTERS
-                        Number of filters per filter size (default: 128)
+            Number of filters per filter size (default: 128)
   --l2_reg_lambda L2_REG_LAMBDA
-                        L2 regularizaion lambda (default: 0.0)
+            L2 regularizaion lambda (default: 0.0)
   --dropout_keep_prob DROPOUT_KEEP_PROB
-                        Dropout keep probability (default: 0.5)
+            Dropout keep probability (default: 0.5)
   --batch_size BATCH_SIZE
-                        Batch Size (default: 64)
+            Batch Size (default: 64)
   --num_epochs NUM_EPOCHS
-                        Number of training epochs (default: 100)
+            Number of training epochs (default: 100)
   --evaluate_every EVALUATE_EVERY
-                        Evaluate model on dev set after this many steps
-                        (default: 100)
+            Evaluate model on dev set after this many steps
+            (default: 100)
   --checkpoint_every CHECKPOINT_EVERY
-                        Save model after this many steps (default: 100)
+            Save model after this many steps (default: 100)
   --allow_soft_placement ALLOW_SOFT_PLACEMENT
-                        Allow device soft device placement
+            Allow device soft device placement
   --noallow_soft_placement
   --log_device_placement LOG_DEVICE_PLACEMENT
-                        Log placement of ops on devices
+            Log placement of ops on devices
   --nolog_device_placement
 
 ```
