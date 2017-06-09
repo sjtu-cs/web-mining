@@ -8,7 +8,8 @@ import datetime
 import data_helpers
 from text_cnn import TextCNN
 from tensorflow.contrib import learn
-
+import tempfile
+import win32file
 # Parameters
 # ==================================================
 
@@ -78,7 +79,13 @@ print("Train/Dev split: {:d}/{:d}".format(len(y_train), len(y_dev)))
 
 # Training
 # ==================================================
+tf.MaxAcc = 0.1
 
+def copymax(path):
+    # 拷文件
+    # 文件已存在时，1为不覆盖，0为覆盖
+    win32file.CopyFile(path, "{}backup".format(path), 0)
+    
 with tf.Graph().as_default():
     session_conf = tf.ConfigProto(
       allow_soft_placement=FLAGS.allow_soft_placement,
@@ -132,6 +139,7 @@ with tf.Graph().as_default():
         # Checkpoint directory. Tensorflow assumes this directory already exists so we need to create it
         checkpoint_dir = os.path.abspath(os.path.join(out_dir, "checkpoints"))
         checkpoint_prefix = os.path.join(checkpoint_dir, "model")
+        MaxAcc_prefi=os.path.join(checkpoint_dir, "MAXACCmodel")
         if not os.path.exists(checkpoint_dir):
             os.makedirs(checkpoint_dir)
         saver = tf.train.Saver(tf.global_variables(), max_to_keep=FLAGS.num_checkpoints)
@@ -179,6 +187,13 @@ with tf.Graph().as_default():
 
             if writer:
                 writer.add_summary(summaries, step)
+            if tf.MaxAcc<accuracy:
+                tf.MaxAcc=accuracy
+                ifsave=True
+            else:
+                ifsave=False
+            print("Max acc:{}".format(tf.MaxAcc))
+            return ifsave
 
         # Generate batches
         batches = data_helpers.batch_iter(
@@ -190,8 +205,13 @@ with tf.Graph().as_default():
             current_step = tf.train.global_step(sess, global_step)
             if current_step % FLAGS.evaluate_every == 0:
                 print("\nEvaluation:")
-                dev_step(x_dev, y_dev, writer=dev_summary_writer)
+                ifsave =dev_step(x_dev, y_dev, writer=dev_summary_writer)
                 print("")
             if current_step % FLAGS.checkpoint_every == 0:
                 path = saver.save(sess, checkpoint_prefix, global_step=current_step)
                 print("Saved model checkpoint to {}\n".format(path))
+                if ifsave:  # 存个备份免得被删了
+                path = saver.save(sess, MaxAcc_prefi, None)
+                copymax("{}.data-00000-of-00001".format(path))
+                copymax("{}.index".format(path))
+                copymax("{}.meta".format(path))
