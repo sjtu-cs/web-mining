@@ -1,12 +1,26 @@
-**[This code belongs to the "Implementing a CNN for Text Classification in Tensorflow" blog post.](http://www.wildml.com/2015/12/implementing-a-cnn-for-text-classification-in-tensorflow/)**
+##SJTU WebMining homework project
+
+**This project is created for finishing our web mining homework. The base project is [dennybritz/cnn-text-classification-tf](https://github.com/dennybritz/cnn-text-classification-tf)**
+
+
+
+
+**[The base project code belongs to the "Implementing a CNN for Text Classification in Tensorflow" blog post.](http://www.wildml.com/2015/12/implementing-a-cnn-for-text-classification-in-tensorflow/)**
 
 It is slightly simplified implementation of Kim's [Convolutional Neural Networks for Sentence Classification](http://arxiv.org/abs/1408.5882) paper in Tensorflow.
+
 
 ## Requirements
 
 - Python 3
 - Tensorflow > 0.12
 - Numpy
+
+##how to install tensorflow
+please see the [install guide](https://www.tensorflow.org/install/) in tensorflow website 
+
+
+
 
 ## Training
 
