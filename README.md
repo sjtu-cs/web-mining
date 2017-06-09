@@ -22,7 +22,6 @@ please see the [install guide](https://www.tensorflow.org/install/) in tensorflo
 
 
 
-
 ## Training
 
 Print parameters:
@@ -70,7 +69,7 @@ Train:
 ./train.py
 ```
 
-Train with kaggle dataset
+Train, including the kaggle dataset:
 
 ```bash
 ./train.py --data_file ./data/train-all.txt
