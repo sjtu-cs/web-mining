@@ -4,6 +4,7 @@
 import tensorflow as tf
 import numpy as np
 import os
+import glob
 import time
 import datetime
 import data_helpers
@@ -17,6 +18,7 @@ import csv
 # Data Parameters
 
 tf.flags.DEFINE_string("data_file", "./data/dev.txt", "Data source for the evaluation data.")
+tf.flags.DEFINE_boolean("with_labels", False, "Data with label?")
 
 # Eval Parameters
 tf.flags.DEFINE_integer("batch_size", 64, "Batch Size (default: 64)")
@@ -31,6 +33,11 @@ tf.flags.DEFINE_boolean("log_device_placement", False, "Log placement of ops on 
 
 FLAGS = tf.flags.FLAGS
 FLAGS._parse_flags()
+
+if not FLAGS.checkpoint_dir:
+    all_checkpoints = glob.glob('./runs/*')
+    FLAGS.checkpoint_dir = "%s/checkpoints" % (all_checkpoints[-1])
+
 print("\nParameters:")
 for attr, value in sorted(FLAGS.__flags.items()):
     print("{}={}".format(attr.upper(), value))
@@ -39,7 +46,7 @@ print("")
 # CHANGE THIS: Load data. Load your own data here
 if FLAGS.eval_train:
 
-    x_text, y_test = data_helpers.load_data_and_labels(FLAGS.data_file, with_labels = False)
+    x_text, y_test = data_helpers.load_data_and_labels(FLAGS.data_file, with_labels = FLAGS.with_labels)
 
     if y_test is not None:
         y_test = np.argmax(y_test, axis=1)
@@ -93,7 +100,7 @@ if y_test is not None:
     print("Accuracy: {:g}".format(correct_predictions/float(len(y_test))))
 
 # Save the evaluation to a txt
-out_file = os.path.join(FLAGS.checkpoint_dir, "..", "test-release.txt")
+out_file = os.path.join(".", "test-release.txt")
 print("Saving evaluation to {0}".format(out_file))
 
 x_raw = data_helpers.load_data_and_labels(FLAGS.data_file, with_labels = False, raw_data = True)
