@@ -36,7 +36,10 @@ FLAGS._parse_flags()
 
 if not FLAGS.checkpoint_dir:
     all_checkpoints = glob.glob('./runs/*')
-    FLAGS.checkpoint_dir = "%s/checkpoints" % (all_checkpoints[-1])
+    if len(all_checkpoints) > 0:
+        FLAGS.checkpoint_dir = "%s/checkpoints" % (all_checkpoints[-1])
+    else:
+        raise Exception('No checkpoint! Please run ./train.py first.')
 
 print("\nParameters:")
 for attr, value in sorted(FLAGS.__flags.items()):
