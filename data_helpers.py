@@ -29,8 +29,7 @@ def clean_str(string):
     return string.strip().lower()
 
 
-
-def load_data_and_labels(data_file):
+def load_data_and_labels(data_file, with_labels = True, raw_data = False):
     """
     Loads MR polarity data from files, splits the data into words and generates labels.
     Returns split sentences and labels.
@@ -38,29 +37,42 @@ def load_data_and_labels(data_file):
     # Load data from files
 
     # {"Very Negative", "Negative", "Neutral", "Positive", "Very Positive"}
-    label_mappings = {
-        '0': [1,0,0,0,0],
-        '1': [0,1,0,0,0],
-        '2': [0,0,1,0,0],
-        '3': [0,0,0,1,0],
-        '4': [0,0,0,0,1]
-    }
-
-
-    # Default label for unkonw label
-    default_label = [0,0,1,0,0]
-
-    x_text = []
-    labels = []
-
+    x_raw = []
     with open(data_file, 'r') as f:
-        samples = [s.strip() for s in list(f.readlines())]
-        for sample in samples:
-            x_text.append(clean_str(sample[2:]))
-            labels.append(label_mappings.get(sample[0], default_label))
+        x_raw = [s.strip() for s in list(f.readlines())]
 
-    y_label = np.concatenate([labels], 0)
-    return [x_text, y_label]
+    if raw_data:
+        return x_raw
+    else:
+        x_text = []
+
+        if with_labels:
+            labels = []
+
+            label_mappings = {
+                '0': [1,0,0,0,0],
+                '1': [0,1,0,0,0],
+                '2': [0,0,1,0,0],
+                '3': [0,0,0,1,0],
+                '4': [0,0,0,0,1]
+            }
+
+            # Default label for unkonw label
+            default_label = [0,0,1,0,0]
+
+            for sample in x_raw:
+                x_text.append(clean_str(sample[2:]))
+                labels.append(label_mappings.get(sample[0], default_label))
+
+            y_label = np.concatenate([labels], 0)
+
+        else:
+            for sample in x_raw:
+                x_text.append(clean_str(sample))
+
+            y_label = None
+
+        return [x_text, y_label]
 
 def batch_iter(data, batch_size, num_epochs, shuffle=True):
     """

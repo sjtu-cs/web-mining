@@ -39,17 +39,18 @@ print("")
 # CHANGE THIS: Load data. Load your own data here
 if FLAGS.eval_train:
 
-    x_raw, y_test = data_helpers.load_data_and_labels(FLAGS.data_file)
+    x_text, y_test = data_helpers.load_data_and_labels(FLAGS.data_file, with_labels = False)
 
-    y_test = np.argmax(y_test, axis=1)
+    if y_test is not None:
+        y_test = np.argmax(y_test, axis=1)
 else:
-    x_raw = ["a masterpiece four years in the making", "everything is off."]
+    x_text = ["a masterpiece four years in the making", "everything is off."]
     y_test = [1, 0]
 
 # Map data into vocabulary
 vocab_path = os.path.join(FLAGS.checkpoint_dir, "..", "vocab")
 vocab_processor = learn.preprocessing.VocabularyProcessor.restore(vocab_path)
-x_test = np.array(list(vocab_processor.transform(x_raw)))
+x_test = np.array(list(vocab_processor.transform(x_text)))
 
 print("\nEvaluating...\n")
 
@@ -91,9 +92,13 @@ if y_test is not None:
     print("Total number of test examples: {}".format(len(y_test)))
     print("Accuracy: {:g}".format(correct_predictions/float(len(y_test))))
 
-# Save the evaluation to a csv
-predictions_human_readable = np.column_stack((all_predictions, np.array(x_raw)))
-out_path = os.path.join(FLAGS.checkpoint_dir, "..", "prediction.csv")
-print("Saving evaluation to {0}".format(out_path))
-with open(out_path, 'w') as f:
-    csv.writer(f, delimiter= ' ').writerows(predictions_human_readable)
+# Save the evaluation to a txt
+out_file = os.path.join(FLAGS.checkpoint_dir, "..", "test-release.txt")
+print("Saving evaluation to {0}".format(out_file))
+
+x_raw = data_helpers.load_data_and_labels(FLAGS.data_file, with_labels = False, raw_data = True)
+
+
+with open(out_file, 'w+') as f:
+    for i in range(len(x_raw)):
+        f.write("%d %s\n"%(int(all_predictions[i]), x_raw[i]))
